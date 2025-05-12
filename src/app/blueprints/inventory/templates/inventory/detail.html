@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<body>
+<h1>{{ item and 'Editar Item' or 'Novo Item' }}</h1>
+    <form method="post" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        {{ form.entidade.label }} {{ form.entidade() }}<br>
+        {{ form.codigo.label }} {{ form.codigo() }}<br>
+        {{ form.nome.label }} {{ form.nome() }}<br>
+        {{ form.descricao.label }} {{ form.descricao() }}<br>
+        {{ form.imagem.label }} {{ form.imagem() }}<br>
+        {{ form.unidade.label }} {{ form.unidade() }}<br>
+        {{ form.comprimento.label }} {{ form.comprimento() }}<br>
+        {{ form.largura.label }} {{ form.largura() }}<br>
+        {{ form.profundidade.label }} {{ form.profundidade() }}<br>
+        {{ form.submit() }}
+    </form>
+    <a href="{{ url_for('inventory.list_items') }}">Voltar</a>
+</body>
+</html>
