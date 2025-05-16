@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify
-from app.extensions import db
 from app.models import Cliente
 
 cliente_bp = Blueprint("cliente", __name__, url_prefix="/clientes")
+
 
 @cliente_bp.route('', methods=["GET"])
 def listar_clientes():
@@ -20,7 +20,8 @@ def listar_clientes():
             "email": c.email,
             "telefone": c.telefone,
             "endereco": c.endereco,
-        } for c in clientes
+        }
+        for c in clientes
     ]
 
     return jsonify(resultado), 200

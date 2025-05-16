@@ -19,24 +19,29 @@ def create_app():
     """
 
     env = os.getenv("FLASK_ENV", "development")
+    # pylint: disable=redefined-outer-name
     app = Flask(__name__, instance_relative_config=False)
     app.config.from_object(get_config(env))
 
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
-
     # Extensões
     db.init_app(app)
     migrate.init_app(app, db)
-
 
     app.supabase = supabase
 
     # Blueprints
 
-    from .blueprints.health.routes import health_bp
-    from .blueprints.cliente.routes import cliente_bp
-    from .blueprints.inventory import bp as inventory_bp
+    from .blueprints.health.routes import (  # pylint: disable=import-outside-toplevel
+        health_bp,
+    )
+    from .blueprints.cliente.routes import (  # pylint: disable=import-outside-toplevel
+        cliente_bp,
+    )
+    from .blueprints.inventory import (  # pylint: disable=import-outside-toplevel
+        bp as inventory_bp,
+    )
 
     app.register_blueprint(health_bp)
     app.register_blueprint(cliente_bp)

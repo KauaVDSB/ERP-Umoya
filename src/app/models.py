@@ -1,5 +1,5 @@
-from .extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from .extensions import db
 
 
 class User(db.Model):
@@ -8,7 +8,9 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), unique=True, nullable=False)
     role = db.Column(db.String(120), unique=True, nullable=False)
-    criado_em = db.Column(db.DateTime, nullable=False, server_default=db.func.now())
+    criado_em = db.Column(
+        db.DateTime, nullable=False, server_default=db.func.now()
+    )
 
     def set_password(self, raw: str):
         self.password_hash = generate_password_hash(raw)
@@ -33,7 +35,9 @@ class Produto(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(150), nullable=True)
     descricao = db.Column(db.Text)
-    preco_unitaro = db.Column(db.Numeric(10, 2), nullable=False)  # 10 digitos, sendo 2 para casas decimais
+    preco_unitaro = db.Column(
+        db.Numeric(10, 2), nullable=False
+    )  # 10 digitos, sendo 2 para casas decimais
     sku = db.Column(db.String(50), unique=True)
 
     itens = db.relationship("ItemPedido", backref="produto", lazy=True)
@@ -56,12 +60,18 @@ class ItemPedido(db.Model):
     quantidade = db.Column(db.Integer, nullable=False)
     preco = db.Column(db.Numeric(10, 2), nullable=False)
 
-    pedido_id = db.Column(db.Integer, db.ForeignKey("pedidos.id"), nullable=False)
-    produto_id = db.Column(db.Integer, db.ForeignKey("produtos.id"), nullable=False)
+    pedido_id = db.Column(
+        db.Integer, db.ForeignKey("pedidos.id"), nullable=False
+    )
+    produto_id = db.Column(
+        db.Integer, db.ForeignKey("produtos.id"), nullable=False
+    )
 
 
 class Estoque(db.Model):
     __tablename__ = "estoque"
     id = db.Column(db.Integer, primary_key=True)
     quantidade_disponivel = db.Column(db.Integer, nullable=False, default=0)
-    produto_id = db.Column(db.Integer, db.ForeignKey("produtos.id"), unique=True, nullable=False)
+    produto_id = db.Column(
+        db.Integer, db.ForeignKey("produtos.id"), unique=True, nullable=False
+    )

@@ -15,7 +15,6 @@ def app():
     os.environ["DATABASE_URL"] = "sqlite:///:memory:"
     app = create_app()
 
-    
     with app.app_context():
         # db.drop_all()
         db.create_all()
@@ -26,4 +25,3 @@ def app():
     # with app.app_context():
     #     db.session.remove()
     #     db.drop_all()
-
