@@ -8,9 +8,6 @@ from .config import get_config
 from .extensions import db, migrate
 
 
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
 def create_app():
@@ -18,6 +15,10 @@ def create_app():
     Cria app e carrega configs, extensões e blueprints
     """
 
+    SUPABASE_URL = os.getenv("SUPABASE_URL")
+    SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+    
     env = os.getenv("FLASK_ENV", "development")
     # pylint: disable=redefined-outer-name
     app = Flask(__name__, instance_relative_config=False)

@@ -7,7 +7,7 @@ from typing import Optional
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 from werkzeug.utils import secure_filename
-from app import supabase, SUPABASE_URL
+from flask import current_app
 
 
 def generate_unique_filename(
@@ -49,9 +49,10 @@ def upload_file_to_supabase_and_get_url(
     path = f"{bucket}/{unique_name}"
     content = file_data.read()
 
-    supabase.storage.from_(bucket).upload(path, content)
+    current_app.supabase.storage.from_(bucket).upload(path, content)
 
-    return f"{SUPABASE_URL}/storage/v1/object/public/{path}"
+    supabase_url = current_app.config.get("SUPABASE_URL")
+    return f"{supabase_url}/storage/v1/object/public/{path}"
 
 
 def delete_file_from_supabase(bucket: str, key: str) -> bool:
@@ -65,7 +66,7 @@ def delete_file_from_supabase(bucket: str, key: str) -> bool:
 
     # pylint: disable=broad-exception-caught
     try:
-        supabase.storage.from_(bucket).remove([f"{bucket}/{key}"])
+        current_app.supabase.storage.from_(bucket).remove([f"{bucket}/{key}"])
         return True
     except Exception as e:
         # Log de erro

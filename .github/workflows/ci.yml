@@ -44,4 +44,3 @@ jobs:
 
       - name: Run Tests with Coverage
         run: pytest --cov=src/app --cov-report=html
-
