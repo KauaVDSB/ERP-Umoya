@@ -1,6 +1,5 @@
 import os
 import sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 import logging
 from logging.config import fileConfig
 
@@ -9,9 +8,12 @@ from flask import current_app
 from alembic import context
 
 from app.extensions import db
-import app.models
+import app.models  # noqa: F401
 
 
+sys.path.insert(
+    0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
+)
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -24,6 +26,7 @@ logger = logging.getLogger('alembic.env')
 
 target_metadata = db.metadata
 
+
 def get_engine():
     try:
         # this works with Flask-SQLAlchemy<3 and Alchemical
@@ -35,8 +38,11 @@ def get_engine():
 
 def get_engine_url():
     try:
-        return get_engine().url.render_as_string(hide_password=False).replace(
-            '%', '%%')
+        return (
+            get_engine()
+            .url.render_as_string(hide_password=False)
+            .replace('%', '%%')
+        )
     except AttributeError:
         return str(get_engine().url).replace('%', '%%')
 
@@ -101,9 +107,7 @@ def run_migrations_online():
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection,
-            target_metadata=target_metadata,
-            **conf_args
+            connection=connection, target_metadata=target_metadata, **conf_args
         )
 
         with context.begin_transaction():

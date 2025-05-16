@@ -15,15 +15,13 @@ def app():
     os.environ["DATABASE_URL"] = "sqlite:///:memory:"
     app = create_app()
 
-    
     with app.app_context():
-        db.drop_all()
+        # db.drop_all()
         db.create_all()
 
     yield app
 
     # Remove conexões e dados após o teste
-    with app.app_context():
-        db.session.remove()
-        db.drop_all()
-
+    # with app.app_context():
+    #     db.session.remove()
+    #     db.drop_all()

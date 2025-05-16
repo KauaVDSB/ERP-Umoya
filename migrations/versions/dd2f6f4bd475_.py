@@ -1,8 +1,8 @@
-"""Cria tabelas: User, Cliente, Produto, Pedido, PedidoItem, Estoque
+"""empty message
 
-Revision ID: 0b4920c396f3
-Revises:
-Create Date: 2025-05-11 22:22:17.119530
+Revision ID: dd2f6f4bd475
+Revises: 0b4920c396f3
+Create Date: 2025-05-12 01:27:35.339912
 
 """
 
@@ -11,8 +11,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0b4920c396f3'
-down_revision = None
+revision = 'dd2f6f4bd475'
+down_revision = '0b4920c396f3'
 branch_labels = None
 depends_on = None
 

@@ -1,84 +1,151 @@
+[![CI](https://github.com/KauaVDSB/ERP-Umoya/actions/workflows/ci.yml/badge.svg)](https://github.com/KauaVDSB/ERP-Umoya/actions/workflows/ci.yml) [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/KauaVDSB/ERP-Umoya/releases/tag/v0.1.0) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 # ERP-Umoya
 
-**ERP-Umoya** é um sistema modular de gestão empresarial, desenvolvido em Python com Flask. Este projeto tem como objetivo ser flexível, escalável e adaptável a diferentes cenários empresariais.
+**ERP-Umoya** é um sistema modular de gestão empresarial, construído em Python com Flask e Supabase para Storage.
 
 ---
 
-## **Funcionalidades Implementadas**
-- **Configuração do projeto:**
-  - Estrutura modular usando Flask com Blueprints.
-  - Gerenciamento de banco de dados com SQLAlchemy.
-  - Migrações com Alembic.
-  - Variáveis de ambiente com suporte a `.flaskenv` e `.env`.
+## 📑 Sumário
 
-- **Modelagem de dados:**
-  - Entidades principais:
-    - User
-    - Cliente
-    - Produto
-    - Pedido
-    - ItemPedido
-    - Estoque
+* [Funcionalidades](#-funcionalidades)
+* [Estrutura do Projeto](#-estrutura-do-projeto)
+* [Instalação & Configuração](#-instalação--configuração)
+* [Variáveis de Ambiente](#-variáveis-de-ambiente)
+* [Executando a Aplicação](#-executando-a-aplicação)
+* [Testes Automatizados](#-testes-automatizados)
+* [Changelog](#-changelog)
+* [Contribuindo](#-contribuindo)
+* [Autor](#-autor)
+* [License](#-license)
 
-- **Rotas criadas:**
-  - `/health`: Health-check básico.
-  - `/clientes`: Listagem de clientes (vazia ou preenchida).
+---
 
-- **Testes automatizados:**
-  - Configuração de banco de dados SQLite em memória para testes.
-  - Testes de health-check e listagem de clientes com pytest.
+## 🚀 Funcionalidades
 
-### **Requisitos**
-- **Dependências principais:**
-  - Python 3.9
-  - Flask
-  - SQLAlchemy
-  - Alembic
-  - pytest
-  - pytest-flask
+* **Estrutura Modular**: Flask Blueprints para separação de responsabilidades.
+* **Modelagem Relacional**: SQLAlchemy com migrações Alembic.
+* **CRUD de Inventário**: Itens, Entidades, Categorias (muitos-para-muitos), imagens no Supabase Storage.
+* **Upload de Arquivos**: Suporte a uploads seguros e limpeza de temporários.
+* **Formulários Robustos**: Flask-WTF com validações e feedback de erros.
+* **Testes**: `pytest` para health-check, clientes e inventário.
+* **Segurança**: CSRF nativo, configuração de limites de upload.
 
-### **Instalação**
-1. Clone o repositório:
+---
+
+## 📁 Estrutura do Projeto
+
+```bash
+.
+├── .github/workflows    # CI & lint
+├── migrations           # Alembic migrations
+├── src/app              # Package principal
+│   ├── blueprints       # Módulos da aplicação (auth, cliente, inventory...)
+│   ├── services         # Lógica de negócio e integrações
+│   ├── extensions.py    # Instâncias de db, migrate
+│   ├── config.py        # Configurações por ambiente
+│   └── wsgi.py          # Entry-point do Flask
+├── tests                # Testes automatizados
+├── .env.example         # Exemplo de variáveis de ambiente
+├── .flaskenv            # Configuração Flask CLI
+├── README.md            # Documentação do projeto
+├── CHANGELOG.md         # Histórico de versões
+├── LICENSE              # Licença MIT
+└── requirements.txt     # Dependências Python
+```
+
+---
+
+## ⚙️ Instalação & Configuração
+
+1. **Clone o repositório**
+
    ```bash
    git clone https://github.com/KauaVDSB/ERP-Umoya.git
    cd ERP-Umoya
    ```
+2. **Configurar virtualenv**
 
-2. Configure o ambiente virtual:
    ```bash
    python -m venv .venv
-   .venv\Scripts\activate  # Windows
-   source .venv/bin/activate  # macOS/Linux
+   source .venv/bin/activate      # macOS/Linux
+   .venv\Scripts\activate       # Windows
    ```
+3. **Instalar dependências**
 
-3. Instale as dependências:
    ```bash
    pip install -r requirements.txt
    ```
+4. **Variáveis de ambiente**
 
-4. Configure as variáveis de ambiente:
-   - Crie um arquivo `.env` baseado em `.env.example`.
-   - Certifique-se de definir o `DATABASE_URL` corretamente.
+   * Copie `.env.example` para `.env` e defina:
 
-5. Inicialize o banco de dados:
+     * `DATABASE_URL`
+     * `SUPABASE_URL`
+     * `SUPABASE_KEY`
+     * `SECRET_KEY`
+     * `FLASK_ENV`
+     * `MAX_CONTENT_LENGTH`
+5. **Aplicar migrações**
+
    ```bash
    flask db upgrade
    ```
 
-6. Execute o servidor:
-   ```bash
-   flask run
-   ```
+---
 
-7. (Opcional) Rode os testes:
-   ```bash
-   pytest -q
-   ```
+## 🌐 Variáveis de Ambiente
 
-### **Próximos Passos**
-- Expandir o sistema com módulos adicionais (vendas, estoque, financeiro).
-- Implementar autenticação e controle de acesso.
+| Variável             | Descrição                                      |
+| -------------------- | ---------------------------------------------- |
+| DATABASE\_URL        | URI de conexão com o banco (Postgres/Supabase) |
+| SUPABASE\_URL        | URL do projeto Supabase                        |
+| SUPABASE\_KEY        | Chave API do Supabase                          |
+| SECRET\_KEY          | Chave secreta do Flask (CSRF)                  |
+| FLASK\_ENV           | `development` ou `production`                  |
+| MAX\_CONTENT\_LENGTH | Tamanho máximo de upload (em bytes)            |
 
 ---
 
-*Atualização: 11/05/2025*
+## ▶️ Executando a Aplicação
+
+```bash
+flask run
+```
+
+**Acesse** `http://127.0.0.1:5000/inventory/items`
+
+---
+
+## 🧪 Testes Automatizados
+
+```bash
+pytest -q
+```
+
+---
+
+## 📜 Changelog
+
+Veja [CHANGELOG.md](CHANGELOG.md) para histórico de versões.
+
+---
+
+## 🤝 Contribuindo
+
+Pull requests são bem-vindos para melhorias e correções!
+
+---
+
+## ✉️ Autor
+
+**KauaVDSB**
+
+* GitHub: [https://github.com/KauaVDSB](https://github.com/KauaVDSB)
+* LinkedIn: [https://linkedin.com/in/kaua-vdsb](https://linkedin.com/in/kaua-vdsb)
+
+---
+
+## 📄 License
+
+Distribuído sob a Licença MIT. Veja [LICENSE](LICENSE).

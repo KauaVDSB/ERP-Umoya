@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+    
+<head>
+    <!-- Biblioteca select2 para melhorias de campos SelectMultiple -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css"
+        rel="stylesheet"
+    />
+</head>
+<body>
+<h1>{{ item and 'Editar Item' or 'Novo Item' }}</h1>
+    <form method="post" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        {{ form.entidade.label }} {{ form.entidade() }}<br>
+        
+        <label for="{{ form.categorias.id }}">{{ form.categorias.label.text }}</label><br>
+        {{ form.categorias(class="select2-multiple", multiple="multiple") }}<br>
+
+        {{ form.codigo.label }} {{ form.codigo() }}<br>
+        {{ form.nome.label }} {{ form.nome() }}<br>
+        {{ form.descricao.label }} {{ form.descricao() }}<br>
+        {{ form.imagem.label }} {{ form.imagem() }}<br>
+        {{ form.unidade.label }} {{ form.unidade() }}<br>
+        {{ form.comprimento.label }} {{ form.comprimento() }}<br>
+        {{ form.largura.label }} {{ form.largura() }}<br>
+        {{ form.profundidade.label }} {{ form.profundidade() }}<br>
+        {{ form.submit() }}
+    </form>
+    <a href="{{ url_for('inventory.list_items') }}">Voltar</a>
+
+
+
+    <!-- JQuery necessário para select2 funcionar -->
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous">
+    </script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js">
+    </script>
+    <script>
+        $(function() {
+            $('.select2-multiple').select2({
+                placeholder: "Selecione uma ou mais categorias",
+                width: '100%'
+            });
+        });
+    </script>
+
+</body>
+</html>
